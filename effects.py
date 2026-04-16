@@ -1,5 +1,5 @@
 """
-effects.py  —  Screen shake, slow motion, flash, vignette, scanlines
+effects.py  --  Screen shake, slow motion, flash, vignette, scanlines
 """
 
 import pygame

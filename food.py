@@ -1,5 +1,5 @@
 """
-food.py  —  Food system with multiple types, animated rendering, magnet attraction
+food.py  --  Food system with multiple types, animated rendering, magnet attraction
 """
 
 import pygame

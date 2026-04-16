@@ -1,5 +1,5 @@
 """
-game.py  --  NEON SERPENT: Arcade Edition
+game.py  —  NEON SERPENT: Arcade Edition
 Main game loop, mode logic, integration of all subsystems.
 
 Run:  python game.py
@@ -12,7 +12,7 @@ import random
 import time
 from typing import Optional, List, Dict, Any
 
-# -- Local modules ------------------------------------------------------------
+# ── Local modules ────────────────────────────────────────────────────────────
 from snake       import Snake, SKINS
 from food        import MultiFood, FOOD_TYPES
 from particles   import ParticleSystem
@@ -24,7 +24,7 @@ from ui          import (MainMenu, HUD, GameOverScreen, PauseOverlay,
                          AnimatedBackground, draw_text_shadow, PAL, draw_neon_rect)
 from progression import ProgressionManager, ComboSystem, ACHIEVEMENTS
 
-# -- Constants ----------------------------------------------------------------
+# ── Constants ────────────────────────────────────────────────────────────────
 CELL = 28
 COLS = 40
 ROWS = 28
@@ -32,7 +32,7 @@ W    = CELL * COLS   # 1120
 H    = CELL * ROWS   # 784
 FPS  = 60
 
-# -- Level themes (game levels, not player levels) ----------------------------
+# ── Level themes (game levels, not player levels) ────────────────────────────
 LEVEL_THEMES = {
     1: {"name": "CYBER GRID",       "bg": (4, 6, 14),   "accent": (80, 255, 160),  "fog": False},
     2: {"name": "NEON DISTRICT",    "bg": (6, 4, 18),   "accent": (180, 80, 255),  "fog": False},
@@ -68,7 +68,7 @@ def clamp_col(c):
     return tuple(max(0, min(255, int(v))) for v in c)
 
 
-# -- Font loader ---------------------------------------------------------------
+# ── Font loader ───────────────────────────────────────────────────────────────
 
 def load_fonts() -> dict:
     candidates = ["georgia", "palatino", "times new roman", "garamond",
@@ -99,7 +99,7 @@ def load_fonts() -> dict:
     }
 
 
-# -- Obstacles ----------------------------------------------------------------
+# ── Obstacles ────────────────────────────────────────────────────────────────
 
 class Obstacle:
     def __init__(self, gx, gy, kind="wall"):
@@ -155,7 +155,7 @@ def spawn_obstacles(count: int, snake_body, food_positions) -> List[Obstacle]:
     return obstacles
 
 
-# -- Game Session -------------------------------------------------------------
+# ── Game Session ─────────────────────────────────────────────────────────────
 
 class GameSession:
     """One play session. Created fresh each game."""
@@ -253,7 +253,7 @@ class GameSession:
         self.challenge_obstacles.extend(new_obs)
 
 
-# -- Main Game Class -----------------------------------------------------------
+# ── Main Game Class ───────────────────────────────────────────────────────────
 
 class NeonSerpentGame:
     STATE_MENU     = "menu"
@@ -269,9 +269,9 @@ class NeonSerpentGame:
         self._real_w = info.current_w
         self._real_h = info.current_h
 
-        pygame.display.set_caption("<> NEON SERPENT <>")
+        pygame.display.set_caption("◈ NEON SERPENT ◈")
         try:
-            self.screen = pygame.display.set_mode((W, H), pygame.FULLSCREEN)
+            self.screen = pygame.display.set_mode((W, H), pygame.SCALED | pygame.FULLSCREEN)
         except Exception:
             self.screen = pygame.display.set_mode((W, H))
 
@@ -322,7 +322,7 @@ class NeonSerpentGame:
 
         self._tick = 0
 
-    # -- Main Loop ------------------------------------------------------------
+    # ── Main Loop ────────────────────────────────────────────────────────────
 
     def run(self):
         while True:
@@ -338,7 +338,7 @@ class NeonSerpentGame:
         pygame.quit()
         sys.exit()
 
-    # -- Event handling -------------------------------------------------------
+    # ── Event handling ───────────────────────────────────────────────────────
 
     def _handle_events(self):
         for event in pygame.event.get():
@@ -416,7 +416,7 @@ class NeonSerpentGame:
         self._menu  = MainMenu(self.fonts, self.prog.hi_scores, self.bg)
         self.sound.start_music()
 
-    # -- Session start --------------------------------------------------------
+    # ── Session start ────────────────────────────────────────────────────────
 
     def _start_session(self, mode: str, difficulty: str):
         self.session = GameSession(mode, difficulty, self._current_skin, self.fonts)
@@ -429,7 +429,7 @@ class NeonSerpentGame:
         self.prog.record_game(mode, difficulty, {})
         self.sound.play("menu_confirm")
 
-    # -- Update ---------------------------------------------------------------
+    # ── Update ───────────────────────────────────────────────────────────────
 
     def _update(self, dt: float):
         self._tick += 1
@@ -485,7 +485,7 @@ class NeonSerpentGame:
         # Update stats timing
         sess.stats["time_alive"] += dt / 1000.0
 
-        # Move snake  -- dt-based timing (frame-rate independent) ----------
+        # Move snake  ── dt-based timing (frame-rate independent) ──────────
         # move_timer accumulates real milliseconds. When it exceeds
         # move_interval_ms, take one step and reset.
         sess.move_timer += dt
@@ -654,7 +654,7 @@ class NeonSerpentGame:
         new_achs = self.prog.check_achievements(sess.stats)
         for ach in new_achs:
             self.sound.play("level_up")
-            self._toast(f"? {ach['title']}", ach["desc"])
+            self._toast(f"🏆 {ach['title']}", ach["desc"])
 
     def _collect_powerup(self, sess: GameSession, kind: str):
         defn = POWERUP_TYPES[kind]
@@ -696,7 +696,7 @@ class NeonSerpentGame:
 
         new_achs = self.prog.check_achievements(sess.stats)
         for ach in new_achs:
-            self._toast(f"? {ach['title']}", ach["desc"])
+            self._toast(f"🏆 {ach['title']}", ach["desc"])
 
     def _die(self, sess: GameSession):
         if not sess.alive and self.state == self.STATE_DEAD:
@@ -725,7 +725,7 @@ class NeonSerpentGame:
         self.prog.record_game(sess.mode, sess.difficulty, sess.stats)
         new_achs = self.prog.check_achievements(sess.stats)
         for ach in new_achs:
-            self._toast(f"? {ach['title']}", ach["desc"])
+            self._toast(f"🏆 {ach['title']}", ach["desc"])
 
         self.prog.save()
 
@@ -741,7 +741,7 @@ class NeonSerpentGame:
     def _toast(self, title: str, desc: str):
         self._toasts.append(AchievementToast(self.fonts, title, desc))
 
-    # -- Draw -----------------------------------------------------------------
+    # ── Draw ─────────────────────────────────────────────────────────────────
 
     def _draw(self):
         surf = self.game_surf
@@ -783,7 +783,7 @@ class NeonSerpentGame:
         theme = sess.theme
         ac    = theme["accent"]
 
-        # -- Background -------------------------------------------------------
+        # ── Background ───────────────────────────────────────────────────────
         surf.fill(theme["bg"])
 
         # Animated grid
@@ -801,31 +801,31 @@ class NeonSerpentGame:
             density = min(1.0, (sess.level - 2) * 0.2)
             self.fog.draw(surf, theme["bg"], density)
 
-        # -- Obstacles --------------------------------------------------------
+        # ── Obstacles ────────────────────────────────────────────────────────
         for obs in sess.challenge_obstacles:
             obs.draw(surf, t, ac)
 
-        # -- Food -------------------------------------------------------------
+        # ── Food ─────────────────────────────────────────────────────────────
         sess.food.draw(surf, t)
 
-        # -- World power-ups ---------------------------------------------------
+        # ── World power-ups ───────────────────────────────────────────────────
         sess.powerups.draw_world(surf, self.fonts)
 
-        # -- Snake ------------------------------------------------------------
+        # ── Snake ────────────────────────────────────────────────────────────
         ghost  = sess.powerups.has("GHOST")
         shield = sess.powerups.has("SHIELD")
         sess.snake.draw(surf, t, ghost=ghost, shield=shield)
 
-        # -- Particles --------------------------------------------------------
+        # ── Particles ────────────────────────────────────────────────────────
         if self._settings.values.get("particles", True):
             sess.particles.draw(surf)
 
-        # -- Screen effects ----------------------------------------------------
+        # ── Screen effects ────────────────────────────────────────────────────
         self.flash.draw(surf)
         self.danger.draw(surf)
         self.vignette.draw(surf, theme["bg"], 0.6)
 
-        # -- HUD --------------------------------------------------------------
+        # ── HUD ──────────────────────────────────────────────────────────────
         ghost_or_wrap = DIFFICULTY_CONFIG[sess.difficulty]["wrap"] or ghost
         hud_state = {
             "score":      sess.score,
@@ -844,16 +844,16 @@ class NeonSerpentGame:
         # Active power-up bars
         sess.powerups.draw_hud(surf, self.fonts, 14, 58)
 
-        # -- Combo timer bar ---------------------------------------------------
+        # ── Combo timer bar ───────────────────────────────────────────────────
         if sess.combo.active:
             self._draw_combo_bar(surf, sess.combo, ac)
 
-        # -- Ghost/wrap indicator ----------------------------------------------
+        # ── Ghost/wrap indicator ──────────────────────────────────────────────
         if ghost_or_wrap:
-            s = self.fonts["tiny"].render("O WRAP", True, (80, 120, 255))
+            s = self.fonts["tiny"].render("◎ WRAP", True, (80, 120, 255))
             surf.blit(s, (W - 80, 56))
 
-        # -- Daily challenges sidebar -------------------------------------------
+        # ── Daily challenges sidebar ───────────────────────────────────────────
         self._draw_challenges_mini(surf, sess)
 
     def _draw_combo_bar(self, surf, combo, accent_col):
@@ -867,7 +867,7 @@ class NeonSerpentGame:
 
         # Track
         pygame.draw.rect(surf, (30, 35, 50), (bx, by, bw, 5), border_radius=2)
-        # Fill -- pulsing color
+        # Fill — pulsing color
         col = clamp_col(lerp_color((255, 60, 60), accent_col, frac))
         fw  = int(bw * frac)
         if fw > 0:
@@ -893,7 +893,7 @@ class NeonSerpentGame:
             fw = int(bw * frac)
             if fw > 0:
                 pygame.draw.rect(surf, col, (x, y, fw, 5), border_radius=2)
-            tick_mark = "? " if done else ""
+            tick_mark = "✓ " if done else ""
             label = self.fonts["tiny"].render(
                 f"{tick_mark}{ch['desc'][:22]}", True,
                 (80, 180, 80) if done else (60, 70, 90))
@@ -901,14 +901,14 @@ class NeonSerpentGame:
             y += 32
 
 
-# -- Entry point ---------------------------------------------------------------
+# ── Entry point ───────────────────────────────────────────────────────────────
 
 def main():
     print("=" * 50)
-    print(" <>  NEON SERPENT: ARCADE EDITION  <>")
+    print("  NEON SERPENT ARCADE EDITION  ")
     print("=" * 50)
-    print("  Controls:  WASD / Arrows  |  P = Pause")
-    print("             TAB = Settings |  M = Music")
+    print("  Controls:  WASD / Arrows  │  P = Pause")
+    print("             TAB = Settings │  M = Music")
     print("             F11 = Fullscreen")
     print("=" * 50)
     game = NeonSerpentGame()

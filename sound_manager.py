@@ -1,5 +1,5 @@
 """
-sound_manager.py  —  Procedural audio engine
+sound_manager.py  --  Procedural audio engine
 Works WITH numpy (better quality) OR WITHOUT numpy (pure Python fallback).
 No external audio files required.
 """
@@ -24,7 +24,7 @@ except ImportError:
 SAMPLE_RATE = 44100
 
 
-# ── Pure-Python helpers ──────────────────────────────────────────────────────
+# -- Pure-Python helpers ------------------------------------------------------
 
 def _sine_py(freq, dur_ms, amp=0.5):
     n = int(SAMPLE_RATE * dur_ms / 1000)
@@ -73,7 +73,7 @@ def _to_sound_py(samples):
     return pygame.mixer.Sound(buffer=buf.tobytes())
 
 
-# ── NumPy helpers ────────────────────────────────────────────────────────────
+# -- NumPy helpers ------------------------------------------------------------
 
 def _sine_np(freq, dur_ms, amp=0.5):
     n = int(SAMPLE_RATE * dur_ms / 1000)
@@ -119,7 +119,7 @@ def _to_sound_np(arr):
     return pygame.sndarray.make_sound(stereo)
 
 
-# ── Sound generators ─────────────────────────────────────────────────────────
+# -- Sound generators ---------------------------------------------------------
 
 def _gen(name):
     try:
@@ -294,7 +294,7 @@ def _gen_bgm():
         return _to_sound_py(a)
 
 
-# ── SoundManager class ───────────────────────────────────────────────────────
+# -- SoundManager class -------------------------------------------------------
 
 class SoundManager:
     NAMES = [
@@ -320,11 +320,11 @@ class SoundManager:
                 pygame.mixer.pre_init(SAMPLE_RATE, -16, 2, 1024)
                 pygame.mixer.init(SAMPLE_RATE, -16, 2, 1024)
             self.enabled = True
-            status = "numpy ✓" if _NP else "pure Python (no numpy)"
-            print(f"[Audio] Mixer ready — {status}")
+            status = "numpy ?" if _NP else "pure Python (no numpy)"
+            print(f"[Audio] Mixer ready -- {status}")
             self._preload()
         except Exception as e:
-            print(f"[Audio] Init failed ({e}) — running silently")
+            print(f"[Audio] Init failed ({e}) -- running silently")
 
     def _preload(self):
         ok = 0

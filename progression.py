@@ -1,5 +1,5 @@
 """
-progression.py  —  XP, achievements, skins, daily challenges, leaderboard
+progression.py  --  XP, achievements, skins, daily challenges, leaderboard
 """
 
 import json
@@ -12,39 +12,39 @@ from typing import List, Dict, Optional, Tuple
 
 SAVE_FILE = "save_data.json"
 
-# ── Achievement Definitions ──────────────────────────────────────────────────
+# -- Achievement Definitions --------------------------------------------------
 
 ACHIEVEMENTS = {
-    "first_eat":    {"title": "First Bite",      "desc": "Eat your first food",           "xp": 10,  "icon": "🍎"},
-    "combo_5":      {"title": "Combo King",       "desc": "Reach a 5× combo",              "xp": 30,  "icon": "⚡"},
-    "combo_10":     {"title": "Unstoppable",      "desc": "Reach a 10× combo",             "xp": 80,  "icon": "💥"},
-    "length_20":    {"title": "Growing Pains",    "desc": "Reach length 20",               "xp": 25,  "icon": "📏"},
-    "length_50":    {"title": "Serpent",           "desc": "Reach length 50",               "xp": 75,  "icon": "🐍"},
-    "length_100":   {"title": "Leviathan",         "desc": "Reach length 100",              "xp": 200, "icon": "👑"},
-    "score_100":    {"title": "Centurion",         "desc": "Score 100 points",              "xp": 20,  "icon": "💯"},
-    "score_1000":   {"title": "Millennium",        "desc": "Score 1000 points",             "xp": 100, "icon": "🌟"},
-    "score_5000":   {"title": "Transcendent",      "desc": "Score 5000 points",             "xp": 300, "icon": "🔮"},
-    "level_3":      {"title": "Seasoned",          "desc": "Reach level 3",                 "xp": 40,  "icon": "📈"},
-    "level_7":      {"title": "Nightmare",         "desc": "Reach maximum level",           "xp": 500, "icon": "☠"},
-    "powerup_10":   {"title": "Power Hungry",      "desc": "Collect 10 power-ups",          "xp": 50,  "icon": "⚡"},
-    "survive_60s":  {"title": "Survivor",          "desc": "Survive 60 seconds",            "xp": 35,  "icon": "⏱"},
-    "survive_300s": {"title": "Endurance Master",  "desc": "Survive 5 minutes",             "xp": 200, "icon": "🏅"},
-    "hard_mode":    {"title": "Masochist",         "desc": "Play on Hard difficulty",       "xp": 25,  "icon": "💀"},
-    "no_powerup":   {"title": "Purist",            "desc": "Score 200 without power-ups",   "xp": 100, "icon": "🎯"},
-    "all_modes":    {"title": "Completionist",     "desc": "Play all 4 game modes",         "xp": 150, "icon": "🗺"},
-    "shield_save":  {"title": "Close Call",        "desc": "Shield saves you from death",   "xp": 60,  "icon": "🛡"},
-    "daily_3":      {"title": "Dedicated",         "desc": "Complete 3 daily challenges",   "xp": 120, "icon": "📅"},
+    "first_eat":    {"title": "First Bite",      "desc": "Eat your first food",           "xp": 10,  "icon": "?"},
+    "combo_5":      {"title": "Combo King",       "desc": "Reach a 5x combo",              "xp": 30,  "icon": "~"},
+    "combo_10":     {"title": "Unstoppable",      "desc": "Reach a 10x combo",             "xp": 80,  "icon": "?"},
+    "length_20":    {"title": "Growing Pains",    "desc": "Reach length 20",               "xp": 25,  "icon": "?"},
+    "length_50":    {"title": "Serpent",           "desc": "Reach length 50",               "xp": 75,  "icon": "?"},
+    "length_100":   {"title": "Leviathan",         "desc": "Reach length 100",              "xp": 200, "icon": "?"},
+    "score_100":    {"title": "Centurion",         "desc": "Score 100 points",              "xp": 20,  "icon": "?"},
+    "score_1000":   {"title": "Millennium",        "desc": "Score 1000 points",             "xp": 100, "icon": "?"},
+    "score_5000":   {"title": "Transcendent",      "desc": "Score 5000 points",             "xp": 300, "icon": "?"},
+    "level_3":      {"title": "Seasoned",          "desc": "Reach level 3",                 "xp": 40,  "icon": "?"},
+    "level_7":      {"title": "Nightmare",         "desc": "Reach maximum level",           "xp": 500, "icon": "X"},
+    "powerup_10":   {"title": "Power Hungry",      "desc": "Collect 10 power-ups",          "xp": 50,  "icon": "~"},
+    "survive_60s":  {"title": "Survivor",          "desc": "Survive 60 seconds",            "xp": 35,  "icon": "?"},
+    "survive_300s": {"title": "Endurance Master",  "desc": "Survive 5 minutes",             "xp": 200, "icon": "?"},
+    "hard_mode":    {"title": "Masochist",         "desc": "Play on Hard difficulty",       "xp": 25,  "icon": "?"},
+    "no_powerup":   {"title": "Purist",            "desc": "Score 200 without power-ups",   "xp": 100, "icon": "?"},
+    "all_modes":    {"title": "Completionist",     "desc": "Play all 4 game modes",         "xp": 150, "icon": "?"},
+    "shield_save":  {"title": "Close Call",        "desc": "Shield saves you from death",   "xp": 60,  "icon": "?"},
+    "daily_3":      {"title": "Dedicated",         "desc": "Complete 3 daily challenges",   "xp": 120, "icon": "?"},
 }
 
 
-# ── Daily Challenges ─────────────────────────────────────────────────────────
+# -- Daily Challenges ---------------------------------------------------------
 
 CHALLENGE_POOL = [
     {"id": "eat_30",     "desc": "Eat 30 food items",          "goal": 30,  "stat": "food_eaten",   "xp": 80},
     {"id": "eat_60",     "desc": "Eat 60 food items",          "goal": 60,  "stat": "food_eaten",   "xp": 150},
     {"id": "score_500",  "desc": "Score 500 points",           "goal": 500, "stat": "score",        "xp": 100},
     {"id": "score_2000", "desc": "Score 2000 points",          "goal": 2000,"stat": "score",        "xp": 250},
-    {"id": "combo_8",    "desc": "Achieve an 8× combo",        "goal": 8,   "stat": "max_combo",    "xp": 120},
+    {"id": "combo_8",    "desc": "Achieve an 8x combo",        "goal": 8,   "stat": "max_combo",    "xp": 120},
     {"id": "survive_2m", "desc": "Survive for 2 minutes",      "goal": 120, "stat": "time_alive",   "xp": 90},
     {"id": "level_5",    "desc": "Reach level 5",              "goal": 5,   "stat": "level",        "xp": 130},
     {"id": "powerups_5", "desc": "Collect 5 power-ups",        "goal": 5,   "stat": "powerups",     "xp": 70},
@@ -65,7 +65,7 @@ def get_daily_challenges() -> List[dict]:
     return chosen
 
 
-# ── Progression Manager ──────────────────────────────────────────────────────
+# -- Progression Manager ------------------------------------------------------
 
 class ProgressionManager:
     def __init__(self):
@@ -109,7 +109,7 @@ class ProgressionManager:
         except Exception as e:
             print(f"[Save] Error: {e}")
 
-    # ── XP & Level ─────────────────────────────────────────────────────────
+    # -- XP & Level ---------------------------------------------------------
 
     def add_xp(self, amount: int) -> int:
         """Returns XP added."""
@@ -138,7 +138,7 @@ class ProgressionManager:
     def player_level(self) -> int:
         return self.data["level"]
 
-    # ── High Scores ────────────────────────────────────────────────────────
+    # -- High Scores --------------------------------------------------------
 
     def update_hi_score(self, difficulty: str, score: int) -> bool:
         current = self.data["hi_scores"].get(difficulty, 0)
@@ -154,7 +154,7 @@ class ProgressionManager:
     def hi_scores(self) -> dict:
         return self.data["hi_scores"]
 
-    # ── Skins ───────────────────────────────────────────────────────────────
+    # -- Skins ---------------------------------------------------------------
 
     def unlock_skin(self, skin_key: str) -> bool:
         if skin_key not in self.data["unlocked_skins"]:
@@ -174,7 +174,7 @@ class ProgressionManager:
                 newly_unlocked.append(key)
         return newly_unlocked
 
-    # ── Achievements ───────────────────────────────────────────────────────
+    # -- Achievements -------------------------------------------------------
 
     def unlock_achievement(self, key: str) -> Optional[dict]:
         if key not in ACHIEVEMENTS:
@@ -223,7 +223,7 @@ class ProgressionManager:
 
         return newly
 
-    # ── Lifetime stats ─────────────────────────────────────────────────────
+    # -- Lifetime stats -----------------------------------------------------
 
     def record_game(self, mode: str, difficulty: str, stats: dict):
         self.data["total_games"] += 1
@@ -234,7 +234,7 @@ class ProgressionManager:
             modes.append(mode)
         self.data["modes_played"] = modes
 
-    # ── Daily Challenges ───────────────────────────────────────────────────
+    # -- Daily Challenges ---------------------------------------------------
 
     def daily_challenges(self) -> List[dict]:
         today = str(date.today())
@@ -279,7 +279,7 @@ class ProgressionManager:
         return min(1.0, prog / challenge["goal"])
 
 
-# ── Score Combo System ───────────────────────────────────────────────────────
+# -- Score Combo System -------------------------------------------------------
 
 class ComboSystem:
     COMBO_WINDOW = 180   # frames to eat next food before combo resets (3s at 60fps)
@@ -303,7 +303,7 @@ class ComboSystem:
         self.count += 1
         self.max_count = max(self.max_count, self.count)
         self._just_hit = True
-        # Multiplier scales up: 1x, 1.5x, 2x, 2.5x … cap at 5x
+        # Multiplier scales up: 1x, 1.5x, 2x, 2.5x ? cap at 5x
         self.multiplier = min(5.0, 1.0 + (self.count - 1) * 0.25)
         return self.multiplier
 
@@ -323,15 +323,15 @@ class ComboSystem:
     @property
     def label(self) -> str:
         if self.count >= 10:
-            return f"GODLIKE  ×{self.count}"
+            return f"GODLIKE  x{self.count}"
         elif self.count >= 7:
-            return f"INSANE  ×{self.count}"
+            return f"INSANE  x{self.count}"
         elif self.count >= 5:
-            return f"HOT STREAK  ×{self.count}"
+            return f"HOT STREAK  x{self.count}"
         elif self.count >= 3:
-            return f"COMBO  ×{self.count}"
+            return f"COMBO  x{self.count}"
         elif self.count >= 2:
-            return f"NICE  ×{self.count}"
+            return f"NICE  x{self.count}"
         return ""
 
     @property

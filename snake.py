@@ -1,5 +1,5 @@
 """
-snake.py  —  Snake entity with neon rendering, trail effects, skin system
+snake.py  --  Snake entity with neon rendering, trail effects, skin system
 """
 
 import pygame
@@ -12,7 +12,7 @@ CELL = 28
 COLS = 40
 ROWS = 28
 
-# ── Snake Skins ──────────────────────────────────────────────────────────────
+# -- Snake Skins --------------------------------------------------------------
 
 SKINS = {
     "default": {
@@ -147,7 +147,7 @@ class Snake:
             self.skin_key = key
             self.skin = SKINS[key]
 
-    # ── Rendering ────────────────────────────────────────────────────────────
+    # -- Rendering ------------------------------------------------------------
 
     def draw(self, surf: pygame.Surface, tick: int,
              ghost: bool = False, shield: bool = False):
@@ -172,7 +172,7 @@ class Snake:
             rh = CELL - padding * 2
             radius = CELL // 3
 
-            # ── Glow (head only) ────────────────────────────────────────────
+            # -- Glow (head only) --------------------------------------------
             if i == 0:
                 glow_size = CELL + 10 + head_pulse * 2
                 gs = pygame.Surface((glow_size, glow_size), pygame.SRCALPHA)
@@ -183,7 +183,7 @@ class Snake:
                 surf.blit(gs, (bx * CELL - (glow_size - CELL) // 2,
                                by * CELL - (glow_size - CELL) // 2))
 
-            # ── Segment body ────────────────────────────────────────────────
+            # -- Segment body ------------------------------------------------
             seg_surf = pygame.Surface((rw + 4, rh + 4), pygame.SRCALPHA)
             pygame.draw.rect(seg_surf, (*col, base_alpha),
                              (2, 2, rw, rh), border_radius=radius)
@@ -201,14 +201,14 @@ class Snake:
                 surf.blit(scale_surf, (bx * CELL + CELL // 2 - 3,
                                        by * CELL + CELL // 2 - 3))
 
-        # ── Eyes ────────────────────────────────────────────────────────────
+        # -- Eyes ------------------------------------------------------------
         self._draw_eyes(surf, tick, base_alpha, shield)
 
-        # ── Tongue ──────────────────────────────────────────────────────────
+        # -- Tongue ----------------------------------------------------------
         if tick % 24 < 12 and not ghost:
             self._draw_tongue(surf, tick)
 
-        # ── Shield ring ─────────────────────────────────────────────────────
+        # -- Shield ring -----------------------------------------------------
         if shield:
             self._draw_shield(surf, tick)
 

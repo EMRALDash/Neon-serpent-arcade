@@ -1,6 +1,6 @@
 {
-  "xp": 2389,
-  "level": 7,
+  "xp": 2489,
+  "level": 8,
   "unlocked_skins": [
     "default",
     "inferno",
@@ -24,9 +24,9 @@
     "MEDIUM": 910,
     "HARD": 825
   },
-  "total_games": 183,
-  "total_food_eaten": 116,
-  "total_powerups": 66,
+  "total_games": 189,
+  "total_food_eaten": 125,
+  "total_powerups": 70,
   "modes_played": [
     "CHALLENGE",
     "CLASSIC",
@@ -36,7 +36,7 @@
   "daily_date": "2026-04-16",
   "daily_progress": {
     "combo_8": 5,
-    "survive_2m": 36.08599999999935,
+    "survive_2m": 39.22200000000039,
     "length_30": 27
   },
   "daily_completed": [],
